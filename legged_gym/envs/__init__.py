@@ -38,7 +38,9 @@ from .anymal_b.anymal_b_config import AnymalBRoughCfg, AnymalBRoughCfgPPO
 from .cassie.cassie import Cassie
 from .cassie.cassie_config import CassieRoughCfg, CassieRoughCfgPPO
 from .a1.a1_config import A1RoughCfg, A1RoughCfgPPO
-
+from .spot_ean.terrains.spot_ean_rough_config import SpotEANRoughCfg, SpotEANRoughCfgPPO
+from .spot_ean.flat.spot_ean_config import SpotEANFlatCfg, SpotEANFlatCfgPPO
+from .spot_ean.spot import SpotEan
 
 import os
 
@@ -48,4 +50,6 @@ task_registry.register( "anymal_c_rough", Anymal, AnymalCRoughCfg(), AnymalCRoug
 task_registry.register( "anymal_c_flat", Anymal, AnymalCFlatCfg(), AnymalCFlatCfgPPO() )
 task_registry.register( "anymal_b", Anymal, AnymalBRoughCfg(), AnymalBRoughCfgPPO() )
 task_registry.register( "a1", LeggedRobot, A1RoughCfg(), A1RoughCfgPPO() )
+task_registry.register( "spot_ean_rough", SpotEan, SpotEANRoughCfg(), SpotEANRoughCfgPPO() )
+task_registry.register( "spot_ean_flat", SpotEan, SpotEANFlatCfg(), SpotEANFlatCfgPPO() )
 task_registry.register( "cassie", Cassie, CassieRoughCfg(), CassieRoughCfgPPO() )

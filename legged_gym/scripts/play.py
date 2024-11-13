@@ -38,6 +38,8 @@ from legged_gym.utils import  get_args, export_policy_as_jit, task_registry, Log
 import numpy as np
 import torch
 
+import time
+
 
 def play(args):
     env_cfg, train_cfg = task_registry.get_cfgs(name=args.task)
@@ -48,7 +50,7 @@ def play(args):
     env_cfg.terrain.curriculum = False
     env_cfg.noise.add_noise = False
     env_cfg.domain_rand.randomize_friction = False
-    env_cfg.domain_rand.push_robots = False
+    env_cfg.domain_rand.push_robots = True
 
     # prepare environment
     env, _ = task_registry.make_env(name=args.task, args=args, env_cfg=env_cfg)
@@ -67,7 +69,7 @@ def play(args):
     logger = Logger(env.dt)
     robot_index = 0 # which robot is used for logging
     joint_index = 1 # which joint is used for logging
-    stop_state_log = 100 # number of steps before plotting states
+    stop_state_log = 1000 # number of steps before plotting states
     stop_rew_log = env.max_episode_length + 1 # number of steps before print average episode rewards
     camera_position = np.array(env_cfg.viewer.pos, dtype=np.float64)
     camera_vel = np.array([1., 1., 0.])
@@ -76,6 +78,9 @@ def play(args):
 
     for i in range(10*int(env.max_episode_length)):
         actions = policy(obs.detach())
+        print("actions: ", actions[robot_index, joint_index])
+        print("obs: ", obs)
+
         obs, _, rews, dones, infos = env.step(actions.detach())
         if RECORD_FRAMES:
             if i % 2:
@@ -112,7 +117,8 @@ def play(args):
                     logger.log_rewards(infos["episode"], num_episodes)
         elif i==stop_rew_log:
             logger.print_rewards()
-
+        #camara lenta
+        time.sleep(0.1)
 if __name__ == '__main__':
     EXPORT_POLICY = True
     RECORD_FRAMES = False
